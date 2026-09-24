@@ -53,9 +53,6 @@ fields = [
         default=None,
         validator=None,
     ),
-    field.RestField(
-        "proxy_url", required=False, encrypted=False, default=None, validator=None
-    ),
 ]
 model = RestModel(fields, name=None, special_fields=special_fields)
 

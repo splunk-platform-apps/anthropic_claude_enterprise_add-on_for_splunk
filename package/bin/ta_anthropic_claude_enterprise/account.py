@@ -22,7 +22,7 @@ def get_account_config(session_key: str, account_name: str) -> dict[str, Any]:
         "compliance_api_key": stanza.get("compliance_api_key"),
         "compliance_key_type": stanza.get("compliance_key_type", "compliance_full"),
         "analytics_api_key": stanza.get("analytics_api_key"),
-        "proxy_url": stanza.get("proxy_url") or None,
+        "proxy_url": None,
     }
 
 
@@ -50,5 +50,5 @@ def build_client_from_account(
     return AnthropicClient(
         compliance_api_key=account.get("compliance_api_key"),
         analytics_api_key=analytics_api_key,
-        proxy_url=account.get("proxy_url"),
+        proxy_url=None,
     )
