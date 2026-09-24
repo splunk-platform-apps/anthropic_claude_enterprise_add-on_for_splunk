@@ -71,8 +71,6 @@ Data sources polled from `https://api.anthropic.com`:
   the **Compliance API key** and leave the Analytics key field blank (the
   compliance key is reused automatically). Separate keys per concern also
   work.
-- **Outbound HTTPS** from the collection tier to `https://api.anthropic.com`
-  (directly or via the optional per-account HTTPS proxy).
 
 ### Installation
 
@@ -103,8 +101,6 @@ Splunk Admins are requested to:
 2. **Add an account on the Heavy Forwarder** — open the add-on, go to
    **Configuration → Account → Add**, name it (e.g. `claude`), and paste
    your Compliance API key(s). Keys are stored encrypted and never logged.
-
-   An optional HTTPS proxy URL can be set per account.
 
 ### Usage
 
