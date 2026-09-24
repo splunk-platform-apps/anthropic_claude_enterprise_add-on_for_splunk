@@ -1,43 +1,40 @@
+import logging
 
-import import_declare_test
-
-from splunktaucclib.rest_handler.endpoint import (
-    field,
-    validator,
-    RestModel,
-    MultipleModel,
-)
+import import_declare_test  # noqa: F401
 from splunktaucclib.rest_handler import admin_external, util
 from splunktaucclib.rest_handler.admin_external import AdminExternalHandler
-import logging
+from splunktaucclib.rest_handler.endpoint import (
+    MultipleModel,
+    RestModel,
+    field,
+    validator,
+)
 
 util.remove_http_proxy_env_vars()
 
 
 fields_logging = [
     field.RestField(
-        'loglevel',
+        "loglevel",
         required=True,
         encrypted=False,
-        default='INFO',
+        default="INFO",
         validator=validator.Pattern(
-            regex=r"""^DEBUG|INFO|WARNING|ERROR|CRITICAL$""", 
-        )
+            regex=r"""^DEBUG|INFO|WARNING|ERROR|CRITICAL$""",
+        ),
     )
 ]
-model_logging = RestModel(fields_logging, name='logging')
+model_logging = RestModel(fields_logging, name="logging")
 
 
 endpoint = MultipleModel(
-    'ta-anthropic_claude_enterprise_settings',
-    models=[
-        model_logging
-    ],
+    "ta-anthropic_claude_enterprise_settings",
+    models=[model_logging],
     need_reload=False,
 )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.getLogger().addHandler(logging.NullHandler())
     admin_external.handle(
         endpoint,

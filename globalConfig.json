@@ -39,19 +39,20 @@
                                 }
                             ],
                             "field": "name",
+                            "help": "Account name.",
                             "required": true
                         },
                         {
                             "type": "text",
                             "label": "Compliance API key",
                             "field": "compliance_api_key",
-                            "help": "Anthropic API key with compliance scopes.",
+                            "help": "The Anthropic API key with the corresponding compliance scopes.",
                             "required": true,
                             "encrypted": true
                         },
                         {
                             "type": "singleSelect",
-                            "label": "Compliance key type",
+                            "label": "API Key Type",
                             "field": "compliance_key_type",
                             "defaultValue": "compliance_full",
                             "required": true,
@@ -60,30 +61,23 @@
                                 "autoCompleteFields": [
                                     {
                                         "value": "compliance_full",
-                                        "label": "Compliance Access Key (full API)"
+                                        "label": "Compliance Access Key"
                                     },
                                     {
                                         "value": "admin_activities_only",
-                                        "label": "Admin API key (Activity Feed only)"
+                                        "label": "Admin API Key"
                                     }
                                 ]
                             },
-                            "help": "Full key required for directory and content inputs."
+                            "help": "Select the key type. A Compliance Access Key (created in claude.ai) makes full use of the API, and the Admin API key (created in Claude Console) reaches the Activity Feed only. Compliance Access Key is required for directory and content inputs."
                         },
                         {
                             "type": "text",
                             "label": "Analytics API key",
                             "field": "analytics_api_key",
-                            "help": "Optional if your compliance key also has read:analytics. Otherwise create a separate key with read:analytics and paste it here (same key in both fields is fine).",
+                            "help": "Provide an Analytics API key with the 'read:analytics' scope. If your Compliance API key already includes this scope, this field can be left empty. You may also use the same key for both fields if applicable.",
                             "required": false,
                             "encrypted": true
-                        },
-                        {
-                            "type": "text",
-                            "label": "Proxy URL",
-                            "field": "proxy_url",
-                            "help": "Optional HTTPS proxy URL.",
-                            "required": false
                         }
                     ],
                     "title": "Accounts"
@@ -160,6 +154,7 @@
                                 }
                             ],
                             "field": "name",
+                            "help": "A unique name for the data input.",
                             "required": true
                         },
                         {
@@ -182,6 +177,7 @@
                                 }
                             ],
                             "required": true,
+                            "help": "Time interval of the data input, in seconds.",
                             "defaultValue": "60"
                         },
                         {
@@ -189,6 +185,7 @@
                             "field": "index",
                             "label": "Index",
                             "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
                             "options": {
                                 "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
                                 "denyList": "^_.*$",
@@ -207,6 +204,7 @@
                                 "referenceName": "account"
                             },
                             "field": "account",
+                            "help": "Account to use for this input.",
                             "required": true
                         },
                         {
@@ -214,6 +212,22 @@
                             "label": "Initial backfill days",
                             "field": "backfill_days",
                             "defaultValue": "7",
+                            "help": "Days of activity to backfill on first run (max 90).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Initial backfill days must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        90
+                                    ],
+                                    "errorMsg": "Backfill days must be between 1 and 90."
+                                }
+                            ],
                             "required": false
                         },
                         {
@@ -221,6 +235,22 @@
                             "label": "Max events per cycle",
                             "field": "max_events_per_cycle",
                             "defaultValue": "1000",
+                            "help": "Maximum number of events to fetch per cycle (max 1000).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Max events per cycle must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        50,
+                                        1000
+                                    ],
+                                    "errorMsg": "Max events per cycle must be between 50 and 1000"
+                                }
+                            ],
                             "required": false
                         }
                     ]
@@ -247,6 +277,7 @@
                                 }
                             ],
                             "field": "name",
+                            "help": "A unique name for the data input.",
                             "required": true
                         },
                         {
@@ -269,13 +300,15 @@
                                 }
                             ],
                             "required": true,
-                            "defaultValue": "43200"
+                            "defaultValue": "43200",
+                            "help": "Time interval of the data input, in seconds."
                         },
                         {
                             "type": "singleSelect",
                             "field": "index",
                             "label": "Index",
                             "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
                             "options": {
                                 "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
                                 "denyList": "^_.*$",
@@ -294,6 +327,7 @@
                                 "referenceName": "account"
                             },
                             "field": "account",
+                            "help": "Account to use for this input.",
                             "required": true
                         }
                     ]
@@ -320,6 +354,7 @@
                                 }
                             ],
                             "field": "name",
+                            "help": "A unique name for the data input.",
                             "required": true
                         },
                         {
@@ -342,6 +377,7 @@
                                 }
                             ],
                             "required": true,
+                            "help": "Time interval of the data input, in seconds.",
                             "defaultValue": "86400"
                         },
                         {
@@ -349,6 +385,7 @@
                             "field": "index",
                             "label": "Index",
                             "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
                             "options": {
                                 "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
                                 "denyList": "^_.*$",
@@ -367,6 +404,7 @@
                                 "referenceName": "account"
                             },
                             "field": "account",
+                            "help": "Account to use for this input.",
                             "required": true
                         },
                         {
@@ -374,6 +412,7 @@
                             "label": "Collection mode",
                             "field": "collection_mode",
                             "defaultValue": "chat_id",
+                            "help": "Select the mode for collecting content. You can choose to collect content by user email, chat ID, or file ID.",
                             "required": true,
                             "options": {
                                 "disableSearch": true,
@@ -391,37 +430,149 @@
                                         "label": "By file ID"
                                     }
                                 ]
-                            }
+                            },
+                            "modifyFieldsOnValue": [
+                                {
+                                    "fieldValue": "user_email",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": true
+                                        }
+                                    ]
+                                },
+                                {
+                                    "fieldValue": "chat_id",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "fieldValue": "file_id",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": false
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "type": "text",
                             "label": "Target user email",
                             "field": "target_user_email",
+                            "help": "Email address of the user whose content you want to collect.",
                             "required": false
                         },
                         {
                             "type": "text",
                             "label": "Target chat ID",
                             "field": "target_chat_id",
+                            "help": "ID of the chat whose content you want to collect.",
                             "required": false
                         },
                         {
                             "type": "text",
                             "label": "Target file ID",
                             "field": "target_file_id",
+                            "help": "ID of the file whose content you want to collect.",
                             "required": false
                         },
                         {
                             "type": "checkbox",
                             "label": "Include message bodies",
                             "field": "include_messages",
+                            "help": "Select to include message bodies in the collected content.",
                             "defaultValue": false
                         },
                         {
                             "type": "text",
                             "label": "Max chats per run",
                             "field": "max_chats",
-                            "defaultValue": "10",
+                            "help": "Maximum number of chats to collect per run (max 100).",
+                            "defaultValue": "100",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Max chats per run must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        10,
+                                        100
+                                    ],
+                                    "errorMsg": "Max chats per run must be between 10 and 100"
+                                }
+                            ],
                             "required": false
                         }
                     ]
@@ -448,6 +599,7 @@
                                 }
                             ],
                             "field": "name",
+                            "help": "A unique name for the data input.",
                             "required": true
                         },
                         {
@@ -470,13 +622,15 @@
                                 }
                             ],
                             "required": true,
-                            "defaultValue": "86400"
+                            "defaultValue": "86400",
+                            "help": "Time interval of the data input, in seconds."
                         },
                         {
                             "type": "singleSelect",
                             "field": "index",
                             "label": "Index",
                             "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
                             "options": {
                                 "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
                                 "denyList": "^_.*$",
@@ -495,6 +649,7 @@
                                 "referenceName": "account"
                             },
                             "field": "account",
+                            "help": "Account to use for this input.",
                             "required": true
                         },
                         {
@@ -502,6 +657,7 @@
                             "label": "Usage bucket width",
                             "field": "bucket_width",
                             "defaultValue": "1d",
+                            "help": "Time granularity of the response data.",
                             "options": {
                                 "disableSearch": true,
                                 "autoCompleteFields": [
@@ -523,6 +679,7 @@
                         {
                             "type": "checkbox",
                             "label": "Collect summaries",
+                            "help": "Select to get organization activity summaries.",
                             "field": "collect_summaries",
                             "defaultValue": true
                         },
@@ -530,36 +687,42 @@
                             "type": "checkbox",
                             "label": "Collect usage report",
                             "field": "collect_usage",
+                            "help": "Select to get usage reports.",
                             "defaultValue": true
                         },
                         {
                             "type": "checkbox",
                             "label": "Collect cost report",
                             "field": "collect_cost",
+                            "help": "Select to get cost reports.",
                             "defaultValue": true
                         },
                         {
                             "type": "checkbox",
                             "label": "Collect per-user usage",
                             "field": "collect_user_usage",
+                            "help": "Select to get per-user usage reports.",
                             "defaultValue": true
                         },
                         {
                             "type": "checkbox",
                             "label": "Collect per-user cost",
                             "field": "collect_user_cost",
+                            "help": "Select to get per-user cost reports.",
                             "defaultValue": true
                         },
                         {
                             "type": "checkbox",
                             "label": "Collect user activity",
                             "field": "collect_user_activity",
+                            "help": "Select to get per-user activity reports.",
                             "defaultValue": true
                         },
                         {
                             "type": "checkbox",
                             "label": "Collect spend limits",
                             "field": "collect_spend_limits",
+                            "help": "Select to get spend limit reports.",
                             "defaultValue": true
                         },
                         {
@@ -568,7 +731,22 @@
                             "field": "backfill_days",
                             "defaultValue": "7",
                             "help": "Days of finalized analytics to collect on first run (max 90). Subsequent runs use checkpoint.",
-                            "required": false
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Initial backfill days must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        90
+                                    ],
+                                    "errorMsg": "Backfill days must be between 1 and 90."
+                                }
+                            ],
+                            "required": true
                         }
                     ]
                 }
@@ -630,7 +808,7 @@
     "meta": {
         "name": "TA-anthropic_claude_enterprise",
         "restRoot": "TA-anthropic_claude_enterprise",
-        "version": "1.0.0",
+        "version": "1.0.0-test",
         "displayName": "Anthropic Claude Enterprise Add-on for Splunk",
         "schemaVersion": "0.0.10",
         "navColor": "#CC785C",

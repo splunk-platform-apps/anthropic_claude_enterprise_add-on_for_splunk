@@ -1,24 +1,12 @@
-# Application-level permissions
-
 []
-owner = admin
 access = read : [ * ], write : [ admin, sc_admin ]
 export = system
 
-[views/claude_analytics]
-export = system
-
-[views/claude_security_audit]
-export = system
-
-[views/claude_ai_governance]
-export = system
+[views/configuration]
+access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
 
 [views]
-export = system
-
-[savedsearches]
-export = system
+access = read : [ * ], write : [ admin, sc_admin ]
 
 [eventtypes]
 export = system
@@ -27,9 +15,6 @@ export = system
 export = system
 
 [props]
-export = system
-
-[macros]
 export = system
 
 [collections]
