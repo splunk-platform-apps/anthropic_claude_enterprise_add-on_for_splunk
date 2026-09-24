@@ -1,0 +1,822 @@
+{
+    "pages": {
+        "configuration": {
+            "tabs": [
+                {
+                    "name": "account",
+                    "table": {
+                        "actions": [
+                            "edit",
+                            "delete",
+                            "clone"
+                        ],
+                        "header": [
+                            {
+                                "label": "Name",
+                                "field": "name"
+                            },
+                            {
+                                "label": "Compliance key type",
+                                "field": "compliance_key_type"
+                            }
+                        ]
+                    },
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Account Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of account name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "Account name.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "label": "Compliance API key",
+                            "field": "compliance_api_key",
+                            "help": "The Anthropic API key with the corresponding compliance scopes.",
+                            "required": true,
+                            "encrypted": true
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "API Key Type",
+                            "field": "compliance_key_type",
+                            "defaultValue": "compliance_full",
+                            "required": true,
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "compliance_full",
+                                        "label": "Compliance Access Key"
+                                    },
+                                    {
+                                        "value": "admin_activities_only",
+                                        "label": "Admin API Key"
+                                    }
+                                ]
+                            },
+                            "help": "Select the key type. A Compliance Access Key (created in claude.ai) makes full use of the API, and the Admin API key (created in Claude Console) reaches the Activity Feed only. Compliance Access Key is required for directory and content inputs."
+                        },
+                        {
+                            "type": "text",
+                            "label": "Analytics API key",
+                            "field": "analytics_api_key",
+                            "help": "Provide an Analytics API key with the 'read:analytics' scope. If your Compliance API key already includes this scope, this field can be left empty. You may also use the same key for both fields if applicable.",
+                            "required": false,
+                            "encrypted": true
+                        }
+                    ],
+                    "title": "Accounts"
+                },
+                {
+                    "name": "logging",
+                    "title": "Logging",
+                    "entity": [
+                        {
+                            "type": "singleSelect",
+                            "label": "Log level",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "DEBUG",
+                                        "label": "DEBUG"
+                                    },
+                                    {
+                                        "value": "INFO",
+                                        "label": "INFO"
+                                    },
+                                    {
+                                        "value": "WARNING",
+                                        "label": "WARNING"
+                                    },
+                                    {
+                                        "value": "ERROR",
+                                        "label": "ERROR"
+                                    },
+                                    {
+                                        "value": "CRITICAL",
+                                        "label": "CRITICAL"
+                                    }
+                                ]
+                            },
+                            "defaultValue": "INFO",
+                            "field": "loglevel",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Log level must be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL",
+                                    "pattern": "^DEBUG|INFO|WARNING|ERROR|CRITICAL$"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "title": "Configuration"
+        },
+        "inputs": {
+            "services": [
+                {
+                    "name": "compliance_activities",
+                    "inputHelperModule": "compliance_activities_helper",
+                    "title": "Compliance Activity Feed",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "field": "interval",
+                            "label": "Interval",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Interval must be either a non-negative number, CRON interval or -1.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        30,
+                                        86400
+                                    ],
+                                    "errorMsg": "Interval must be between 30 and 86400"
+                                }
+                            ],
+                            "required": true,
+                            "help": "Time interval of the data input, in seconds.",
+                            "defaultValue": "60"
+                        },
+                        {
+                            "type": "singleSelect",
+                            "field": "index",
+                            "label": "Index",
+                            "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
+                            "options": {
+                                "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
+                                "denyList": "^_.*$",
+                                "createSearchChoice": true
+                            },
+                            "validators": [
+                                {
+                                    "type": "index_name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Account",
+                            "options": {
+                                "referenceName": "account"
+                            },
+                            "field": "account",
+                            "help": "Account to use for this input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "label": "Initial backfill days",
+                            "field": "backfill_days",
+                            "defaultValue": "7",
+                            "help": "Days of activity to backfill on first run (max 90).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Initial backfill days must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        90
+                                    ],
+                                    "errorMsg": "Backfill days must be between 1 and 90."
+                                }
+                            ],
+                            "required": false
+                        },
+                        {
+                            "type": "text",
+                            "label": "Max events per cycle",
+                            "field": "max_events_per_cycle",
+                            "defaultValue": "1000",
+                            "help": "Maximum number of events to fetch per cycle (max 1000).",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Max events per cycle must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        50,
+                                        1000
+                                    ],
+                                    "errorMsg": "Max events per cycle must be between 50 and 1000"
+                                }
+                            ],
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "compliance_directory",
+                    "inputHelperModule": "compliance_directory_helper",
+                    "title": "Compliance Directory Sync",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "field": "interval",
+                            "label": "Interval",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Interval must be either a non-negative number, CRON interval or -1.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        3600,
+                                        86400
+                                    ],
+                                    "errorMsg": "Interval must be between 3600 and 86400"
+                                }
+                            ],
+                            "required": true,
+                            "defaultValue": "43200",
+                            "help": "Time interval of the data input, in seconds."
+                        },
+                        {
+                            "type": "singleSelect",
+                            "field": "index",
+                            "label": "Index",
+                            "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
+                            "options": {
+                                "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
+                                "denyList": "^_.*$",
+                                "createSearchChoice": true
+                            },
+                            "validators": [
+                                {
+                                    "type": "index_name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Account",
+                            "options": {
+                                "referenceName": "account"
+                            },
+                            "field": "account",
+                            "help": "Account to use for this input.",
+                            "required": true
+                        }
+                    ]
+                },
+                {
+                    "name": "compliance_content",
+                    "inputHelperModule": "compliance_content_helper",
+                    "title": "Compliance Content (On-Demand)",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "field": "interval",
+                            "label": "Interval",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Interval must be either a non-negative number, CRON interval or -1.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        300,
+                                        604800
+                                    ],
+                                    "errorMsg": "Interval must be between 300 and 604800"
+                                }
+                            ],
+                            "required": true,
+                            "help": "Time interval of the data input, in seconds.",
+                            "defaultValue": "86400"
+                        },
+                        {
+                            "type": "singleSelect",
+                            "field": "index",
+                            "label": "Index",
+                            "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
+                            "options": {
+                                "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
+                                "denyList": "^_.*$",
+                                "createSearchChoice": true
+                            },
+                            "validators": [
+                                {
+                                    "type": "index_name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Account",
+                            "options": {
+                                "referenceName": "account"
+                            },
+                            "field": "account",
+                            "help": "Account to use for this input.",
+                            "required": true
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Collection mode",
+                            "field": "collection_mode",
+                            "defaultValue": "chat_id",
+                            "help": "Select the mode for collecting content. You can choose to collect content by user email, chat ID, or file ID.",
+                            "required": true,
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "user_email",
+                                        "label": "By user email"
+                                    },
+                                    {
+                                        "value": "chat_id",
+                                        "label": "By chat ID"
+                                    },
+                                    {
+                                        "value": "file_id",
+                                        "label": "By file ID"
+                                    }
+                                ]
+                            },
+                            "modifyFieldsOnValue": [
+                                {
+                                    "fieldValue": "user_email",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": true
+                                        }
+                                    ]
+                                },
+                                {
+                                    "fieldValue": "chat_id",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "fieldValue": "file_id",
+                                    "fieldsToModify": [
+                                        {
+                                            "fieldId": "target_user_email",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_chat_id",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "target_file_id",
+                                            "required": true,
+                                            "display": true
+                                        },
+                                        {
+                                            "fieldId": "max_chats",
+                                            "required": false,
+                                            "display": false
+                                        },
+                                        {
+                                            "fieldId": "include_messages",
+                                            "required": false,
+                                            "display": false
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "label": "Target user email",
+                            "field": "target_user_email",
+                            "help": "Email address of the user whose content you want to collect.",
+                            "required": false
+                        },
+                        {
+                            "type": "text",
+                            "label": "Target chat ID",
+                            "field": "target_chat_id",
+                            "help": "ID of the chat whose content you want to collect.",
+                            "required": false
+                        },
+                        {
+                            "type": "text",
+                            "label": "Target file ID",
+                            "field": "target_file_id",
+                            "help": "ID of the file whose content you want to collect.",
+                            "required": false
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Include message bodies",
+                            "field": "include_messages",
+                            "help": "Select to include message bodies in the collected content.",
+                            "defaultValue": false
+                        },
+                        {
+                            "type": "text",
+                            "label": "Max chats per run",
+                            "field": "max_chats",
+                            "help": "Maximum number of chats to collect per run (max 100).",
+                            "defaultValue": "100",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Max chats per run must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        10,
+                                        100
+                                    ],
+                                    "errorMsg": "Max chats per run must be between 10 and 100"
+                                }
+                            ],
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "analytics_reports",
+                    "inputHelperModule": "analytics_reports_helper",
+                    "title": "Analytics Reports",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ],
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "field": "interval",
+                            "label": "Interval",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Interval must be either a non-negative number, CRON interval or -1.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        3600,
+                                        604800
+                                    ],
+                                    "errorMsg": "Interval must be between 3600 and 604800"
+                                }
+                            ],
+                            "required": true,
+                            "defaultValue": "86400",
+                            "help": "Time interval of the data input, in seconds."
+                        },
+                        {
+                            "type": "singleSelect",
+                            "field": "index",
+                            "label": "Index",
+                            "defaultValue": "default",
+                            "help": "Index where the data will be ingested.",
+                            "options": {
+                                "endpointUrl": "data/indexes?search=isInternal=0+disabled=0",
+                                "denyList": "^_.*$",
+                                "createSearchChoice": true
+                            },
+                            "validators": [
+                                {
+                                    "type": "index_name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Account",
+                            "options": {
+                                "referenceName": "account"
+                            },
+                            "field": "account",
+                            "help": "Account to use for this input.",
+                            "required": true
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Usage bucket width",
+                            "field": "bucket_width",
+                            "defaultValue": "1d",
+                            "help": "Time granularity of the response data.",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "1d",
+                                        "label": "Daily"
+                                    },
+                                    {
+                                        "value": "1h",
+                                        "label": "Hourly"
+                                    },
+                                    {
+                                        "value": "1m",
+                                        "label": "Minute"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect summaries",
+                            "help": "Select to get organization activity summaries.",
+                            "field": "collect_summaries",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect usage report",
+                            "field": "collect_usage",
+                            "help": "Select to get usage reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect cost report",
+                            "field": "collect_cost",
+                            "help": "Select to get cost reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect per-user usage",
+                            "field": "collect_user_usage",
+                            "help": "Select to get per-user usage reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect per-user cost",
+                            "field": "collect_user_cost",
+                            "help": "Select to get per-user cost reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect user activity",
+                            "field": "collect_user_activity",
+                            "help": "Select to get per-user activity reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "Collect spend limits",
+                            "field": "collect_spend_limits",
+                            "help": "Select to get spend limit reports.",
+                            "defaultValue": true
+                        },
+                        {
+                            "type": "text",
+                            "label": "Initial backfill days",
+                            "field": "backfill_days",
+                            "defaultValue": "7",
+                            "help": "Days of finalized analytics to collect on first run (max 90). Subsequent runs use checkpoint.",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Initial backfill days must be a non-negative number.",
+                                    "pattern": "^((?:-1|\\d+(?:\\.\\d+)?)|(([\\*\\d{1,2}\\,\\-\\/]+\\s){4}[\\*\\d{1,2}\\,\\-\\/]+))$"
+                                },
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        90
+                                    ],
+                                    "errorMsg": "Backfill days must be between 1 and 90."
+                                }
+                            ],
+                            "required": true
+                        }
+                    ]
+                }
+            ],
+            "title": "Inputs",
+            "table": {
+                "actions": [
+                    "edit",
+                    "delete",
+                    "clone"
+                ],
+                "header": [
+                    {
+                        "label": "Name",
+                        "field": "name"
+                    },
+                    {
+                        "label": "Input type",
+                        "field": "input_type"
+                    },
+                    {
+                        "label": "Interval",
+                        "field": "interval"
+                    },
+                    {
+                        "label": "Index",
+                        "field": "index"
+                    },
+                    {
+                        "label": "Status",
+                        "field": "disabled"
+                    }
+                ],
+                "moreInfo": [
+                    {
+                        "label": "Name",
+                        "field": "name"
+                    },
+                    {
+                        "label": "Interval",
+                        "field": "interval"
+                    },
+                    {
+                        "label": "Index",
+                        "field": "index"
+                    },
+                    {
+                        "label": "Status",
+                        "field": "disabled",
+                        "mapping": {
+                            "true": "Inactive",
+                            "false": "Active"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "meta": {
+        "name": "TA-anthropic_claude_enterprise",
+        "restRoot": "TA-anthropic_claude_enterprise",
+        "version": "1.0.0",
+        "displayName": "Anthropic Claude Enterprise Add-on for Splunk",
+        "schemaVersion": "0.0.10",
+        "navColor": "#CC785C",
+        "defaultView": "inputs",
+        "checkForUpdates": false,
+        "supportedThemes": [
+            "light",
+            "dark"
+        ]
+    }
+}

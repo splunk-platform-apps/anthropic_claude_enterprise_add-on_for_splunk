@@ -1,0 +1,9 @@
+[]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = system
+
+[views/configuration]
+access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+
+[views]
+access = read : [ * ], write : [ admin, sc_admin ]
