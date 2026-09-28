@@ -19,9 +19,6 @@ To install and run this app, download the latest compiled application directly f
 
 Once downloaded, installation instructions can be found in the provided [documentation](https://splunk-platform-apps.github.io/anthropic_claude_enterprise_add-on_for_splunk/)
 
-> [!NOTE]
-> :bookmark: Discover more on monitoring and governing enterprise AI platform in our [new blog post](https://lantern.splunk.com/Security_Use_Cases/Compliance/Monitoring_and_governing_enterprise_AI_platforms#) on Splunk Lantern.
-
 ## Useful Links
 
 :books: [Documentation](https://splunk-platform-apps.github.io/anthropic_claude_enterprise_add-on_for_splunk/)<br/>
@@ -30,3 +27,5 @@ Once downloaded, installation instructions can be found in the provided [documen
 
 :gear: [Development Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#getting-started)<br/>
 :heart_on_fire: [Contributing Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)
+
+:mega: Discover more on monitoring and governing enterprise AI platform in our [new blog post](https://lantern.splunk.com/Security_Use_Cases/Compliance/Monitoring_and_governing_enterprise_AI_platforms#) on Splunk Lantern.
