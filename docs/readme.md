@@ -8,7 +8,6 @@ It is a UCC-based modular-input add-on
 written in Python 3, using Splunk KV Store for checkpointing (search-head
 cluster safe) and Splunk's encrypted credential store for API keys.
 
-
 ## Features
 
 - Data collection from an Anthropic Claude Enterprise organization through 14 [sourcetypes](#sourcetypes) and 4 [inputs](#usage), *Compliance Activity Feed*, *Compliance Directory Sync*, *Analytics Reports* and *Compliance Content Export*.
@@ -53,7 +52,7 @@ Data sources polled from `https://api.anthropic.com`:
 ## Getting Started
 ### Requirements
 
-- **Splunk** Enterprise 9.x/10.x or Splunk Cloud Platform.
+- **Splunk** Enterprise or Splunk Cloud Platform 9.x/10.x.
 - **A Claude Enterprise organization.**
 - **An enterprise API key** created by a Claude Enterprise **admin** in the
   Anthropic Console. Scopes are selected at key creation; grant the ones
@@ -144,9 +143,7 @@ logs.
 
 ## Versions Supported
 
-Tested against Splunk Enterprise 9.3 and 10.0 (automated install tests),
-with AppInspect passing on the `cloud`, `private_victoria`, and
-`private_classic` tag sets.
+Tested against Splunk Enterprise 9.3 and 10.0 (automated install tests).
 
 ## References
 
