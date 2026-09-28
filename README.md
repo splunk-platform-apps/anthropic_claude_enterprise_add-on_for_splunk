@@ -1,4 +1,15 @@
-# anthropic_claude_enterprise_add-on_for_splunk
+# Anthropic Claude Enterprise Add-on for Splunk
+
+Ingest audit, usage, cost, and spend-limit data from an Anthropic Claude
+Enterprise organization into Splunk.
+
+Data is collected from Anthropic's **Compliance API** (audit feed,
+directory, content export), **Enterprise Analytics API** (usage, cost,
+per-user reports), and **Admin API** (spend limits, directory fallback)
+using scoped enterprise API keys stored encrypted in Splunk.
+
+> [!TIP]
+> :bar_chart: Download and install the [Anthropic Claude Enterprise App for Splunk](https://github.com/splunk-platform-apps/anthropic_compliance_app_for_splunk) to leverage an out-of-the-box collection of dashboards and knowledge objects enabling data visualization and analytics.
 
 ## Getting Started
 
@@ -16,3 +27,5 @@ Once downloaded, installation instructions can be found in the provided [documen
 
 :gear: [Development Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#getting-started)<br/>
 :heart_on_fire: [Contributing Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)
+
+:mega: Discover more on monitoring and governing enterprise AI platform in our [new blog post](https://lantern.splunk.com/Security_Use_Cases/Compliance/Monitoring_and_governing_enterprise_AI_platforms#) on Splunk Lantern.
