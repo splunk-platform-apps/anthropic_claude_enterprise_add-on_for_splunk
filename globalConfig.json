@@ -803,6 +803,13 @@
                     }
                 ]
             }
+        },
+        "dashboard": {
+            "panels": [
+                {
+                    "name": "default"
+                }
+            ]
         }
     },
     "meta": {

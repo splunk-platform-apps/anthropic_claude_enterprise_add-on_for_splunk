@@ -2,6 +2,7 @@
 <nav>
     <view name="inputs" default="true" />
     <view name="configuration"/>
+    <view name="dashboard" />
     <view name="search"/>
     <a
         href="https://splunk-platform-apps.github.io/anthropic_claude_enterprise_add-on_for_splunk/docs#getting-started"
