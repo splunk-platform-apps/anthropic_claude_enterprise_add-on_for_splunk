@@ -71,7 +71,7 @@ Data sources polled from `https://api.anthropic.com`:
   compliance key is reused automatically). Separate keys per concern also
   work.
 
-### Installation
+### Installation 
 
 Download the [latest release](https://github.com/splunk-platform-apps/anthropic_compliance_app_for_splunk/releases) package and install it via
 **Apps → Manage Apps → Install app from file** (Splunk Enterprise), the
@@ -113,7 +113,6 @@ Splunk Admins are requested to:
    | Compliance Content Export | On-demand chat/file content for eDiscovery-style workflows (see [Privacy](#privacy--data-handling) below) | on demand |
 
    Set the **Index** on each input to your dedicated index.
-
 
 ## Troubleshooting
 
