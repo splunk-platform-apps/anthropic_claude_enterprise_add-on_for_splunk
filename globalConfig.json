@@ -820,6 +820,9 @@
         "schemaVersion": "0.0.10",
         "navColor": "#CC785C",
         "defaultView": "inputs",
+        "supportedPythonVersion": [
+            "3.13"
+        ],
         "supportedThemes": [
             "light",
             "dark"
