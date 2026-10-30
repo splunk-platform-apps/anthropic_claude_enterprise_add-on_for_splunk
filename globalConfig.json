@@ -820,7 +820,6 @@
         "schemaVersion": "0.0.10",
         "navColor": "#CC785C",
         "defaultView": "inputs",
-        "checkForUpdates": false,
         "supportedThemes": [
             "light",
             "dark"
