@@ -17,11 +17,8 @@
             "intendedAudience": "IT Professionals"
         },
         "commonInformationModels": {
-            "dataModels": [
-                "Authentication",
-                "Change"
-            ],
-            "version": "6.0.0"
+            "Authentication": "6.0.0",
+            "Change": "6.0.0"
         },
         "description": "Ingest Anthropic Claude Enterprise compliance audit, usage, cost, and spend-limit data into Splunk with security, and governance.",
         "id": {

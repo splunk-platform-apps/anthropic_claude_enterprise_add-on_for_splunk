@@ -114,7 +114,6 @@ Splunk Admins are requested to:
 
    Set the **Index** on each input to your dedicated index.
 
-
 ## Troubleshooting
 
 - **Add-on logs**:
