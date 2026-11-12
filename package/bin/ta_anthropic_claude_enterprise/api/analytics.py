@@ -27,9 +27,7 @@ class AnalyticsAPI:
 
     @classmethod
     def latest_finalized_date(cls) -> date:
-        return datetime.now(UTC).date() - timedelta(
-            days=cls.FINALIZATION_LAG_DAYS
-        )
+        return datetime.now(UTC).date() - timedelta(days=cls.FINALIZATION_LAG_DAYS)
 
     def get_summaries(
         self,
