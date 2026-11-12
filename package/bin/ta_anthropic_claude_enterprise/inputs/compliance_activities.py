@@ -2,7 +2,15 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
+
+try:
+    from datetime import UTC
+except ImportError:
+    from datetime import timezone
+
+    UTC = timezone.utc
+
 from typing import Any
 
 from solnlib import log
@@ -78,7 +86,7 @@ def _collect_activities(
     created_at_gte = None
     if not after_id:
         created_at_gte = (
-            datetime.now(timezone.utc) - timedelta(days=backfill_days)
+            datetime.now(UTC) - timedelta(days=backfill_days)
         ).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     count = 0
