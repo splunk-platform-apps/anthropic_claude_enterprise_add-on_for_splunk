@@ -108,9 +108,9 @@ def _collect_analytics(
     starting_at = datetime.combine(
         start_date, datetime.min.time(), tzinfo=UTC
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
-    ending_at = datetime.combine(
-        end_date, datetime.min.time(), tzinfo=UTC
-    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ending_at = datetime.combine(end_date, datetime.min.time(), tzinfo=UTC).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
 
     counts: dict[str, int] = {
         SOURCETYPE_ANALYTICS_SUMMARY: 0,
