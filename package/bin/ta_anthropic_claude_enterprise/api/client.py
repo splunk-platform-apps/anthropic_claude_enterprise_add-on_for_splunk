@@ -167,7 +167,7 @@ class AnthropicClient:
             return False, "Analytics API key is not configured"
         try:
             from datetime import datetime, timedelta
-            
+
             try:
                 from datetime import UTC
             except ImportError:
