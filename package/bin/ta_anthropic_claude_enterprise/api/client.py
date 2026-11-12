@@ -166,9 +166,16 @@ class AnthropicClient:
         if not self.analytics_api_key:
             return False, "Analytics API key is not configured"
         try:
-            from datetime import datetime, timedelta, timezone
+            from datetime import datetime, timedelta
+            
+            try:
+                from datetime import UTC
+            except ImportError:
+                from datetime import timezone
 
-            end = datetime.now(timezone.utc).date() - timedelta(days=3)
+                UTC = timezone.utc
+
+            end = datetime.now(UTC).date() - timedelta(days=3)
             start = end - timedelta(days=1)
             self.analytics_get(
                 "/v1/organizations/analytics/summaries",
