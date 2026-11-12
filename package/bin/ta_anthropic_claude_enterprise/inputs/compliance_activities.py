@@ -85,9 +85,9 @@ def _collect_activities(
     after_id = state.get("last_activity_id")
     created_at_gte = None
     if not after_id:
-        created_at_gte = (
-            datetime.now(UTC) - timedelta(days=backfill_days)
-        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        created_at_gte = (datetime.now(UTC) - timedelta(days=backfill_days)).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
 
     count = 0
     last_activity_id = after_id
