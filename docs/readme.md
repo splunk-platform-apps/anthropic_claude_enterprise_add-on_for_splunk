@@ -73,21 +73,25 @@ Data sources polled from `https://api.anthropic.com`:
 
 ### Installation
 
-Download the [latest release](https://github.com/splunk-platform-apps/anthropic_compliance_app_for_splunk/releases) package and install it via
-**Apps → Manage Apps → Install app from file** (Splunk Enterprise), the
-self-service app install flow (Splunk Cloud), or
-[ACS](https://docs.splunk.com/Documentation/SplunkCloud/latest/Config/ManageApps).
-
 Where to install:
 
 | Tier | Install? | Why |
 |---|---|---|
-| Search head | No | This TA is only for data ingestion and does not include dashboards or search-time configurations. |
-| Heavy forwarder / IDM | Yes | Data collection (modular inputs) — enable inputs only here. |
-| Indexers | No | This TA only supports modular input-based data collection which uses a heavy forwarder. |
-| Universal forwarder | No | Not applicable. |
+| Search Head | Yes for Splunk Cloud | Runs the data collection inputs. |
+| Heavy Forwarder | Yes for Splunk Enterprise | Runs the data collection inputs. |
+| Indexers | No | No installation required. |
+| Universal Forwarder | No | Not supported. |
 
-On a single instance, one installation does everything.
+Download the add-on package from the [latest GitHub release](https://github.com/splunk-platform-apps/anthropic_compliance_app_for_splunk/releases) or [Splunkbase](https://splunkbase.splunk.com/app/10229), then follow the installation instructions below.
+
+#### Steps for `Splunk Enterprise`
+- Follow the instructions [here](https://docs.splunk.com/Documentation/AddOns/released/Overview/Singleserverinstall) to install the Add-on in a **single-instance** Splunk Enterprise deployment.
+
+- Follow the instructions [here](https://docs.splunk.com/Documentation/AddOns/released/Overview/Distributedinstall) to install the Add-on in a **distributed** Splunk Enterprise deployment.
+
+#### Steps for `Splunk Cloud Platform`
+- Follow the instructions [here](https://docs.splunk.com/Documentation/AddOns/released/Overview/SplunkCloudinstall) to install the Add-on in Splunk Cloud Platform.
+
 
 ### Configuration
 
