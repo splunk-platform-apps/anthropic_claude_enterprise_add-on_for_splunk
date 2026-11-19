@@ -3,7 +3,15 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta
+
+try:
+    from datetime import UTC
+except ImportError:
+    from datetime import timezone
+
+    UTC = timezone.utc
+
 from typing import Any
 
 from ta_anthropic_claude_enterprise.api.client import AnthropicAPIError, AnthropicClient
@@ -19,9 +27,7 @@ class AnalyticsAPI:
 
     @classmethod
     def latest_finalized_date(cls) -> date:
-        return datetime.now(timezone.utc).date() - timedelta(
-            days=cls.FINALIZATION_LAG_DAYS
-        )
+        return datetime.now(UTC).date() - timedelta(days=cls.FINALIZATION_LAG_DAYS)
 
     def get_summaries(
         self,

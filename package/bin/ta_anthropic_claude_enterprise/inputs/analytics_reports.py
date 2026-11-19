@@ -2,7 +2,15 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import date, datetime
+
+try:
+    from datetime import UTC
+except ImportError:
+    from datetime import timezone
+
+    UTC = timezone.utc
+
 from typing import Any
 
 from solnlib import log
@@ -98,11 +106,11 @@ def _collect_analytics(
     backfill_days = min(parse_int(input_item.get("backfill_days"), 7), 90)
     start_date = resolve_analytics_start_date(state, end_date, backfill_days)
     starting_at = datetime.combine(
-        start_date, datetime.min.time(), tzinfo=timezone.utc
+        start_date, datetime.min.time(), tzinfo=UTC
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
-    ending_at = datetime.combine(
-        end_date, datetime.min.time(), tzinfo=timezone.utc
-    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ending_at = datetime.combine(end_date, datetime.min.time(), tzinfo=UTC).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
 
     counts: dict[str, int] = {
         SOURCETYPE_ANALYTICS_SUMMARY: 0,
@@ -316,7 +324,7 @@ def _emit_spend_limit_report(
     source: str,
 ) -> int:
     count = 0
-    snapshot_time = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    snapshot_time = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     for record in iterator:
         payload = wrap_spend_limit_record(record, record_type)
         write_json_event(
